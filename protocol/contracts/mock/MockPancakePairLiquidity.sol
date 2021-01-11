@@ -18,10 +18,9 @@ pragma solidity ^0.5.17;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import '@uniswap/lib/contracts/libraries/FixedPoint.sol';
-import '@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol';
+import '@pancakeswap-libs/pancake-swap-core/contracts/interfaces/IPancakePair.sol';
 
-contract MockUniswapV2PairLiquidity is IUniswapV2Pair {
+contract MockPancakePairLiquidity is IPancakePair {
     using SafeMath for uint256;
 
     uint112 private reserve0;           // uses single storage slot, accessible via getReserves
@@ -52,8 +51,8 @@ contract MockUniswapV2PairLiquidity is IUniswapV2Pair {
      * Should not use
      */
 
-    function name() external pure returns (string memory) { return "Uniswap V2"; }
-    function symbol() external pure returns (string memory) { return "UNI-V2"; }
+    function name() external pure returns (string memory) { return "Pancakeswap"; }
+    function symbol() external pure returns (string memory) { return "CAKE"; }
     function decimals() external pure returns (uint8) { return 18; }
 
     function DOMAIN_SEPARATOR() external view returns (bytes32) { revert("Should not use"); }

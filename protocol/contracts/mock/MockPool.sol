@@ -52,6 +52,6 @@ contract MockPool is Pool {
     }
 
     function getReserves(address tokenA, address tokenB) internal view returns (uint reserveA, uint reserveB) {
-        (reserveA, reserveB,) = IUniswapV2Pair(address(univ2())).getReserves();
+        (reserveA, reserveB,) = IPancakePair(address(univ2())).getReserves();
     }
 }

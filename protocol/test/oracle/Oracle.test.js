@@ -5,7 +5,7 @@ const { expect } = require('chai');
 
 const Dollar = contract.fromArtifact('Dollar');
 const MockOracle = contract.fromArtifact('MockOracle');
-const MockUniswapV2PairTrade = contract.fromArtifact('MockUniswapV2PairTrade');
+const MockPancakePairTrade = contract.fromArtifact('MockPancakePairTrade');
 const MockUSDC = contract.fromArtifact('MockUSDC');
 
 const DECIMAL_DIFF = new BN(10).pow(new BN(12));
@@ -39,7 +39,7 @@ describe('Oracle', function () {
   beforeEach(async function () {
     this.dollar = await Dollar.new({from: ownerAddress});
     this.usdc = await MockUSDC.new({from: ownerAddress});
-    this.amm = await MockUniswapV2PairTrade.new({from: ownerAddress});
+    this.amm = await MockPancakePairTrade.new({from: ownerAddress});
     this.oracle = await MockOracle.new(this.amm.address, this.dollar.address, this.usdc.address, {from: ownerAddress, gas: 8000000});
     await time.increase(3600);
   });

@@ -5,7 +5,7 @@ const { expect } = require('chai');
 
 const MockPool = contract.fromArtifact('MockPool');
 const MockToken = contract.fromArtifact('MockToken');
-const MockUniswapV2PairLiquidity = contract.fromArtifact('MockUniswapV2PairLiquidity');
+const MockPancakePairLiquidity = contract.fromArtifact('MockPancakePairLiquidity');
 const MockSettableDAO = contract.fromArtifact('MockSettableDAO');
 
 const INITIAL_STAKE_MULTIPLE = new BN(10).pow(new BN(6)); // 100 ESD -> 100M ESDS
@@ -25,7 +25,7 @@ describe('Pool', function () {
     await this.dao.set(1);
     this.dollar = await MockToken.new("Empty Set Dollar", "ESD", 18, {from: ownerAddress, gas: 8000000});
     this.usdc = await MockToken.new("USD//C", "USDC", 18, {from: ownerAddress, gas: 8000000});
-    this.univ2 = await MockUniswapV2PairLiquidity.new({from: ownerAddress, gas: 8000000});
+    this.univ2 = await MockPancakePairLiquidity.new({from: ownerAddress, gas: 8000000});
     this.pool = await MockPool.new(this.usdc.address, {from: ownerAddress, gas: 8000000});
     await this.pool.set(this.dao.address, this.dollar.address, this.univ2.address);
   });

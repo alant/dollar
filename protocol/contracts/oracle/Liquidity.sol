@@ -18,13 +18,13 @@ pragma solidity ^0.5.17;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import '@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol';
-import '../external/UniswapV2Library.sol';
+import '@pancakeswap-libs/pancake-swap-core/contracts/interfaces/IPancakePair.sol';
+import '../external/PancakeswapLibrary.sol';
 import "../Constants.sol";
 import "./PoolGetters.sol";
 
 contract Liquidity is PoolGetters {
-    address private constant UNISWAP_FACTORY = address(0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f);
+    address private constant PANCAKE_FACTORY = address(0xBCfCcbde45cE874adCB698cC183deBcF17952812);
 
     function addLiquidity(uint256 dollarAmount) internal returns (uint256, uint256) {
         (address dollar, address usdc) = (address(dollar()), usdc());
@@ -32,18 +32,18 @@ contract Liquidity is PoolGetters {
 
         uint256 usdcAmount = (reserveA == 0 && reserveB == 0) ?
              dollarAmount :
-             UniswapV2Library.quote(dollarAmount, reserveA, reserveB);
+             PancakeswapLibrary.quote(dollarAmount, reserveA, reserveB);
 
         address pair = address(univ2());
         IERC20(dollar).transfer(pair, dollarAmount);
         IERC20(usdc).transferFrom(msg.sender, pair, usdcAmount);
-        return (usdcAmount, IUniswapV2Pair(pair).mint(address(this)));
+        return (usdcAmount, IPancakePair(pair).mint(address(this)));
     }
 
     // overridable for testing
     function getReserves(address tokenA, address tokenB) internal view returns (uint reserveA, uint reserveB) {
-        (address token0,) = UniswapV2Library.sortTokens(tokenA, tokenB);
-        (uint reserve0, uint reserve1,) = IUniswapV2Pair(UniswapV2Library.pairFor(UNISWAP_FACTORY, tokenA, tokenB)).getReserves();
+        (address token0,) = PancakeswapLibrary.sortTokens(tokenA, tokenB);
+        (uint reserve0, uint reserve1,) = IPancakePair(PancakeswapLibrary.pairFor(PANCAKE_FACTORY, tokenA, tokenB)).getReserves();
         (reserveA, reserveB) = tokenA == token0 ? (reserve0, reserve1) : (reserve1, reserve0);
     }
 }
